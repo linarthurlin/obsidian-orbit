@@ -81,7 +81,7 @@ describe('Traditional Chinese slash menu', () => {
     const items = plugin.getSuggestions({ query: '', start: { line: 0, ch: 0 }, end: { line: 0, ch: 1 }, editor: emptyEditor as never, file: {} as never });
     const completeMenu = plugin.getSuggestions({ query: 'e', start: {} as never, end: {} as never, editor: editor('# Heading') as never, file: {} as never });
     expect(items).toHaveLength(20);
-    expect(completeMenu).toHaveLength(42);
+    expect(completeMenu).toHaveLength(45);
     expect(items.map(item => item.template.id)).toContain('math-inline');
     expect(search('footnote').map(item => item.template.id)).toEqual(['footnote']);
     expect(search('callout').map(item => item.template.id)).toContain('callout-danger');
@@ -222,6 +222,22 @@ describe('Traditional Chinese slash menu', () => {
     const pdf = editor('/embed-pdf');
     choose(plugin, pdf, 'embed-pdf', 'embed-pdf');
     expect(pdf.value).toBe('![[Document.pdf]]');
+  });
+
+  it('inserts reusable meeting, research, and decision note skeletons as Markdown text', () => {
+    const plugin = suggest();
+    const meeting = editor('/template-meeting');
+    choose(plugin, meeting, 'template-meeting', 'template-meeting');
+    expect(meeting.value).toContain('## Meeting notes\n\n- Date: YYYY-MM-DD');
+    expect(meeting.value).toContain('### Action items\n- [ ] ');
+
+    const research = editor('/template-research');
+    choose(plugin, research, 'template-research', 'template-research');
+    expect(research.value).toContain('### Summary\n\n### Evidence');
+
+    const decision = editor('/template-decision');
+    choose(plugin, decision, 'template-decision', 'template-decision');
+    expect(decision.value).toContain('### Context\n\n### Decision\n\n### Consequences');
   });
 
   it('inserts the local date, emoji, and hidden Obsidian comment syntax', () => {

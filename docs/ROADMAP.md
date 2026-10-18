@@ -15,7 +15,8 @@
 - [x] Result accessible names, pagination focus/count and scoped forced-colors styles.
 - [x] Traditional Chinese slash menu for the existing Markdown templates: ASCII/full-width slash, pinyin and bilingual search, code-span/fence suppression, keyboard insertion and placeholder selection. Verified with unit tests and real editor input in an isolated Obsidian runtime.
 - [x] 0.5.0 document-first slash menu: 19 Markdown blocks with descriptions, blank-paragraph insertion, placeholder selection and paragraph transforms; no Obsidian/plugin commands are invoked.
-- [x] Expand the document-only menu to 42 fixed Markdown templates plus sized tables: inline formatting/math, Mermaid, Wikilinks, callouts, embeds, comments, paired footnotes, static TOC, date and emoji. Add synthetic editor regression coverage; no Obsidian/plugin commands are invoked.
+- [x] Expand the document-only menu to 45 fixed Markdown templates plus sized tables: inline formatting/math, Mermaid, Wikilinks, callouts, embeds, comments, paired footnotes, static TOC, date, emoji and reusable meeting/research/decision note skeletons. Add synthetic editor regression coverage; no Obsidian/plugin commands are invoked.
+- [x] Keep rich web bookmarks portable: use Markdown links and a research-note skeleton instead of iframe or platform-specific HTML cards.
 
 ## Pending P1 verification
 - [x] Actual isolated Obsidian 1.13.7 / Electron 43.3.0: default theme, public Theme 0.3.0 integration, save/reload, unload and popout.

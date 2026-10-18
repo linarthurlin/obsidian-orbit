@@ -43,6 +43,9 @@ export const SLASH_TEMPLATES: MarkdownTemplate[] = [
   { id: 'embed-note', name: 'Embed note / 嵌入筆記', before: '![[', after: ']]', placeholder: 'Note name' },
   { id: 'comment-block', name: 'Insert hidden comment block / 區塊註解', before: '%%\n', after: '\n%%', placeholder: 'Comment' },
   { id: 'toc', name: 'Insert static table of contents / 靜態目錄', before: '', after: '', placeholder: '' },
+  { id: 'template-meeting', name: 'Insert meeting notes template / 會議紀錄範本', before: '## Meeting notes\n\n- Date: YYYY-MM-DD\n- Participants: \n- Goal: \n\n### Notes\n\n### Decisions\n\n### Action items\n- [ ] ', after: '', placeholder: '' },
+  { id: 'template-research', name: 'Insert research note template / 研究筆記範本', before: '## Research note\n\n- Source: [Title](URL)\n- Captured: YYYY-MM-DD\n- Topic: \n\n### Summary\n\n### Evidence\n\n### Open questions\n', after: '', placeholder: '' },
+  { id: 'template-decision', name: 'Insert decision record template / 決策紀錄範本', before: '## Decision record\n\n- Status: Proposed\n- Date: YYYY-MM-DD\n- Owner: \n\n### Context\n\n### Decision\n\n### Consequences\n', after: '', placeholder: '' },
 ];
 export interface Insertion { text: string; selectionStart: number; selectionEnd: number; }
 export function createInsertion(template: MarkdownTemplate, selected: string, before: string, after: string): Insertion {

@@ -50,6 +50,9 @@ const ALIASES: Record<string, string> = {
   'embed-video': '影片 視頻 嵌入 video embed',
   'embed-note': '嵌入筆記 文件 embed note transclusion',
   toc: '目錄 內容索引 table of contents toc mulu',
+  'template-meeting': '會議 會議紀錄 meeting minutes template huiyi jilu',
+  'template-research': '研究 筆記 閱讀研究 research note literature template yanjiu biji',
+  'template-decision': '決策 決定 decision record adr template juece jilu',
   table: '表格 table biaoge',
   link: '連結 超連結 hyperlink link lianjie',
   image: '圖片 圖像 image embed picture tupian',
@@ -69,6 +72,7 @@ const TITLES: Record<string, string> = {
   'comment-block': '區塊註解', 'date-today': '今日日期', emoji: '表情符號',
   'embed-file': '嵌入 Vault 檔案', 'embed-pdf': '嵌入 PDF', 'embed-audio': '嵌入音訊',
   'embed-video': '嵌入影片', 'embed-note': '嵌入筆記', toc: '靜態目錄',
+  'template-meeting': '會議紀錄範本', 'template-research': '研究筆記範本', 'template-decision': '決策紀錄範本',
 };
 
 const METADATA: Record<string, Pick<SlashItem, 'category' | 'description'>> = {
@@ -111,6 +115,9 @@ const METADATA: Record<string, Pick<SlashItem, 'category' | 'description'>> = {
   'embed-video': { category: '媒體與程式碼', description: 'Obsidian 影片嵌入語法' },
   'embed-note': { category: '媒體與程式碼', description: '在目前筆記嵌入另一則筆記' },
   toc: { category: '文件導覽', description: '依目前標題產生靜態 Markdown 目錄' },
+  'template-meeting': { category: '文件範本', description: '加入會議日期、參與者、討論、決議與待辦骨架' },
+  'template-research': { category: '文件範本', description: '加入來源、摘要、證據與待追問題骨架' },
+  'template-decision': { category: '文件範本', description: '加入狀態、脈絡、決策與後果的 ADR 骨架' },
   table: { category: '媒體與程式碼', description: 'Markdown 表格' },
   link: { category: '媒體與程式碼', description: 'Markdown 連結語法' },
   image: { category: '媒體與程式碼', description: 'Markdown 圖片語法' },
