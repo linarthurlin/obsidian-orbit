@@ -1,3 +1,9 @@
+Personal Glass Companion · working tree (unreleased)
+
+- Expand the document-only slash menu to 42 fixed Markdown templates, covering inline formatting/equations, Mermaid, Wikilinks, more callouts, embeds, footnotes, comments and a heading-derived static table of contents.
+- Add dynamic Markdown table dimensions, selected placeholders, command-ID search and regression coverage; all actions edit only the active document.
+- `npm run check` passes TypeScript/build/validation and 46 automated tests; `npm run package` creates the Companion-only bundle. The expanded menu has not yet received a new Obsidian runtime run.
+
 Personal Glass Companion 0.5.0 prerelease.
 
 - Expand the document-only slash menu to 19 Markdown blocks, including text, ordered lists, links, images and a blank paragraph below the current block.

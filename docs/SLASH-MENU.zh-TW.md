@@ -1,15 +1,26 @@
 # 文件 Markdown 斜線選單
 
-Companion 的斜線選單是目前 Markdown 文件的編輯工具。它只插入或轉換文件文字，不執行 Obsidian 命令、社群插件命令，不操作其他檔案或設定。插入使用 Obsidian 公開 `Editor` API，與一般編輯一樣可復原。
+Companion 的斜線選單是目前 Markdown 文件的編輯工具。選取項目只會在目前編輯器插入或轉換文字；它不會呼叫 Obsidian 命令、社群插件命令，也不會操作其他檔案或設定。插入使用 Obsidian 公開 `Editor` API，與一般編輯一樣可復原。
 
-選項分為文字（空白段落、純文字、標題一至三）、清單（項目、編號、待辦）、區塊（引用、四種 Callout、分隔線），以及媒體與程式碼（連結、圖片語法、程式碼、數學公式、表格）。搜尋支援繁體中文、英文與拼音。項目會顯示分類、用途與 Markdown 預覽。
+目前有 42 個固定 Markdown 範本，另有可調尺寸的表格。空白斜線顯示常用選項；輸入文字後可搜尋完整目錄。搜尋支援繁體中文、英文與拼音，每個結果顯示分類、用途與語法預覽。
 
-空白行選取項目時，選單會插入 Markdown 範本並選取可編輯的 placeholder。若在段落文字後輸入斜線，標題、清單、引用與 Callout 會轉換目前行並保留文字；程式碼、數學、表格等區塊則插入到該段落後。選取「新增空白段落」會在目前區塊下方放置游標。
+| 類別 | 可插入的文件內容 |
+| --- | --- |
+| 文字與清單 | 空白段落、純文字、一至三級標題、項目／編號／待辦清單、引用、分隔線 |
+| 行內格式 | 粗體、斜體、刪除線、螢光標記、行內程式碼、行內公式、行內註解、外部連結、Wikilink、表情符號 |
+| 區塊 | 備註／技巧／警告／範例／問題／成功／危險 Callout、預設收合 Callout、程式碼區塊、區塊公式、Mermaid 圖表、區塊註解 |
+| 文件導覽與引用 | 配對註腳、靜態目錄、今日日期 |
+| 圖片與嵌入 | Markdown 圖片、Vault 檔案／筆記／PDF／音訊／影片的 Obsidian 嵌入語法 |
+| 表格 | Markdown 表格範本；輸入 `/table4x6`、`/4x6` 或 `/表格4x6` 可產生 4 欄、含標題列共 6 列的表格。欄數支援 1–10、列數支援 2–10。 |
 
-選單在 inline code 與 fenced code 內不顯示。ASCII `/` 與全形 `／` 均可觸發；全形符號適合中文輸入情境。
+空白區塊選取項目時，選單會插入語法並選取可編輯的 placeholder。行內項目只取代斜線查詢文字，保留前後內容；標題、清單、引用與 Callout 會轉換目前段落；其他區塊則插入目前段落後。選取「新增空白段落」會在目前區塊下方放置游標。
+
+註腳會自動找未使用的 `footnote-N` ID，並在文件底部加入配對定義。靜態目錄會從現有 ATX 標題產生 Obsidian 標題連結、依層級縮排，並略過 fenced code；沒有標題時不顯示此選項。它是插入當下的快照，後續標題變更不會自動同步。
+
+選單在 inline code 與 fenced code 內不顯示。ASCII `/` 與全形 `／` 均可觸發；全形符號適合中文輸入情境。嵌入、Wikilink、Callout、螢光標記與註解使用 Obsidian Markdown 擴充語法；其他如標題、清單、表格、公式和 Mermaid 保留一般文件原始碼。
 
 ## 與 Obsidian Core Slash Commands 的相容性
 
-Obsidian 核心的 Slash Commands 也使用 ASCII `/`。兩個建議提供者可能競爭：實測顯示核心提供者可在空白行接管 `/`，因此 Companion 的 ASCII 選單未必會出現。輸入全形 `／` 可避開這個競爭；使用者也可以自行停用核心 Slash Commands。Companion 不會讀寫或改變核心插件設定。此限制已列入 roadmap，待找到公開 API 支援的優先順序或共存方式後再處理。
+Obsidian 核心的 Slash Commands 也使用 ASCII `/`。兩個建議提供者可能競爭：既有隔離實測顯示核心提供者可在空白行接管 `/`，因此 Companion 的 ASCII 選單未必會出現。輸入全形 `／` 可避開這個競爭；使用者也可以自行停用核心 Slash Commands。Companion 不會讀寫或改變核心插件設定。公開 API 共存方式仍列在 roadmap。
 
-驗證是在新建 synthetic Vault 的 Obsidian 1.13.7 / Electron 43.3.0 執行，測試庫內停用核心 Slash Commands，以獨立檢查 Companion 的 19 個文件選項、轉換、placeholder、鍵盤選取與還原。另有 Core Slash Commands 開啟時的隔離衝突確認。這不等於 Windows 實體輸入法、螢幕閱讀器或所有編輯模式的認證。
+本次自動化驗證只使用合成 Markdown 編輯器內容；合成單元測試不等同 Obsidian runtime 或視覺驗證。既有 0.5.0 隔離 runtime 報告涵蓋當時的選單；新增項目需以新的合成 Obsidian runtime 檢查，且不代表 Windows 實體輸入法、螢幕閱讀器或所有編輯模式的認證。

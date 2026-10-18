@@ -15,6 +15,7 @@
 - [x] Result accessible names, pagination focus/count and scoped forced-colors styles.
 - [x] Traditional Chinese slash menu for the existing Markdown templates: ASCII/full-width slash, pinyin and bilingual search, code-span/fence suppression, keyboard insertion and placeholder selection. Verified with unit tests and real editor input in an isolated Obsidian runtime.
 - [x] 0.5.0 document-first slash menu: 19 Markdown blocks with descriptions, blank-paragraph insertion, placeholder selection and paragraph transforms; no Obsidian/plugin commands are invoked.
+- [x] Expand the document-only menu to 42 fixed Markdown templates plus sized tables: inline formatting/math, Mermaid, Wikilinks, callouts, embeds, comments, paired footnotes, static TOC, date and emoji. Add synthetic editor regression coverage; no Obsidian/plugin commands are invoked.
 
 ## Pending P1 verification
 - [x] Actual isolated Obsidian 1.13.7 / Electron 43.3.0: default theme, public Theme 0.3.0 integration, save/reload, unload and popout.
@@ -24,6 +25,7 @@
 After explicit CDP authorization, both generated profiles produced passed runtime reports. Every connection verifies the generated Vault path before mutation. No personal Vault was connected.
 
 ## Later verification
+- [ ] Run the expanded slash-menu flows in an isolated Obsidian runtime; current CDP report covers the earlier 19-item menu only.
 - [ ] Verify ASCII slash coexistence with Obsidian Core Slash Commands. On blank blocks the core provider can take precedence; full-width `／` bypasses it. Companion must not alter core plugin settings.
 - [ ] Large-vault latency/memory, physical Windows Chinese IME candidate selection and long-term table/Canvas/cursor coexistence. Synthetic composition events pass; this is not a physical IME certification.
 - [ ] Keyboard/screen-reader/high-contrast, DPI and multi-monitor matrix.

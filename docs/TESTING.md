@@ -1,5 +1,9 @@
 # Companion verification · 0.5.0
 
+## Current working-tree verification
+
+The expanded document-only slash menu contains 42 fixed Markdown templates plus sized tables. `npm run check` passes TypeScript, build, validation and 46 automated tests; `npm run package` produces the Companion-only bundle. These new regression tests use synthetic editor fixtures. The existing isolated Obsidian 1.13.7 / Electron 43.3.0 slash UI report covers the earlier 19-item menu, so it does not verify the new options at runtime. No personal Vault was connected or changed.
+
 npm run check passes TypeScript/build/CSS validation and 40 tests. This includes plugin-only package boundaries; installer preservation of notes, configuration, Theme and Agent assets; legacy settings migration rehearsal; immutable queued saves; recovery after a failed write; unload during delayed load; main/popout attribute/CSS restoration; and early release of closed native-window handles.
 
 Lifecycle tests use a mocked Obsidian host and lightweight document/style objects. They prove plugin-owned logic, not actual Electron rendering or Obsidian lifecycle behavior. The runtime harness is separately type-checked and never bundled into the released plugin.
