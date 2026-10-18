@@ -48,3 +48,11 @@
 .pg-selection-preview { padding: 16px 20px; margin-block: 12px 24px; border-radius: 14px; background: var(--pg-selection-background, var(--background-secondary)); color: var(--pg-text, var(--text-normal)); }
 .pg-selection-preview strong, .pg-selection-preview span { display: block; }
 .pg-selection-preview span { margin-top: 6px; }
+
+/* Keep keyboard position visible even when an external theme removes button outlines. */
+.pg-navigator :is(button, input, select):focus-visible { outline: 2px solid var(--pg-accent); outline-offset: -2px; }
+@media (forced-colors: active) {
+  .pg-navigator .pg-file[aria-current='page'] { background: Highlight; color: HighlightText; border-color: Highlight; }
+  .pg-navigator .pg-file[aria-current='page'] :is(.pg-file-icon, .pg-file-path, .pg-file-preview) { color: HighlightText; }
+  .pg-navigator :is(button, input, select):focus-visible { outline-color: Highlight; }
+}

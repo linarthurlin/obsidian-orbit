@@ -27,9 +27,21 @@ export default class RuntimeHarness extends Plugin {
    await plugin.openNavigator();
    const nav=app.workspace.getLeavesOfType('personal-glass-navigator')[0]?.view;
    assert(nav?.contentEl.querySelector('[aria-label="Search navigator"]'),'navigatorMounted');
-   const input=nav.contentEl.querySelector('[aria-label="Search navigator"]');input.value='狀態估測 #robotics';input.dispatchEvent(new Event('input',{bubbles:true}));
+   const input=nav.contentEl.querySelector('[aria-label="Search navigator"]');
+   const firstRow=nav.contentEl.querySelector('.pg-file');
+   input.focus();input.dispatchEvent(new CompositionEvent('compositionstart',{bubbles:true}));
+   input.value='未完成組字';input.dispatchEvent(new InputEvent('input',{bubbles:true,isComposing:true}));
+   const escape=new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true,isComposing:true});input.dispatchEvent(escape);
+   assert(input.value==='未完成組字' && nav.contentEl.querySelector('.pg-file')===firstRow,'compositionPreservesRows');
+   input.value='狀態估測 #robotics';input.dispatchEvent(new CompositionEvent('compositionend',{bubbles:true}));
    // Narrow layout may display sources, but the filtered results still exist in the view.
    assert(nav.contentEl.querySelectorAll('.pg-file').length===1,'aliasAndTagFiltering');
+   const filtered=nav.contentEl.querySelector('.pg-file');
+   input.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));
+   assert(document.activeElement===filtered,'keyboardMovesToResult');
+   filtered.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+   assert(document.activeElement===input,'keyboardReturnsToSearch');
+   assert(filtered.getAttribute('aria-label').includes('Filtering.md'),'resultAccessibleName');
    plugin.settings.selectionAngle=187;await plugin.persist();
    const saved=JSON.parse(await readFile(resolve(__EXPECTED_VAULT__,'.obsidian/plugins/personal-glass/data.json'),'utf8'));
    assert(saved.selectionAngle===187 && saved.pinnedPaths.includes('Welcome.md'),'settingsSaved');

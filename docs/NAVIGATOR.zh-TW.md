@@ -6,6 +6,7 @@
 
 重新載入 Personal Glass 後，使用左側 **Personal Glass Navigator** 圖示，或命令 **Personal Glass: Open read-only Navigator / 檔案導覽**。
 
+- 中文輸入法組字期間保留既有結果，確認文字後才篩選；輸入搜尋文字會自動顯示結果。
 - 搜尋檔名、路徑、frontmatter `aliases`；`#robotics` 同時符合 `#robotics/estimation`。多個關鍵字取交集。
 - 資料夾按鈕切換來源／結果，包含 All notes、Recently opened、Pinned。資料夾逐層瀏覽，Parent folder 返回上一層。
 - Notes 包含 Markdown、Canvas 與 Bases；可切換附件／全部檔案、名稱自然排序／修改時間、是否包含子資料夾。
@@ -13,7 +14,7 @@
 - 右鍵可釘選／取消釘選、開新分頁。定位按鈕顯示目前文件；鍵盤焦點與目前文件指示分開。
 - 窄側欄在來源與結果間切換；內容寬度至少 480px 時自適應並排。Compact 固定單欄；Dual pane 在空間足夠時並排，狹窄時仍切換以保留可讀性。
 
-設定中的 **Local note previews** 預設關閉。開啟後只讀取目前已列出的 Markdown，跳過超過 200KB 的檔案，快取最多 120 筆；每次先列出 80 個結果，可按 Show next 繼續。搜尋使用 Obsidian 中繼資料快取，不建立全庫內容索引、不載入遠端縮圖。檔案很多時中繼資料篩選仍有全庫遍歷成本，尚未宣稱大型 Vault 效能達標。
+設定中的 **Local note previews** 預設關閉。開啟後只讀取目前已列出的 Markdown，跳過超過 200KB 的檔案，快取最多 120 筆；快速切換搜尋仍最多只有一個預覽讀取進行，過期結果不寫入畫面或快取；每次先列出 80 個結果，可按 Show next 繼續，並將鍵盤焦點移到第一個新增結果。狀態列顯示已列出／符合條件的總數。搜尋使用 Obsidian 中繼資料快取，不建立全庫內容索引、不載入遠端縮圖。檔案很多時中繼資料篩選仍有全庫遍歷成本，尚未宣稱大型 Vault 效能達標。
 
 ## 平面選取配色（獨立 Companion）
 

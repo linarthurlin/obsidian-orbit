@@ -10,6 +10,10 @@
 - [x] Companion-only Navigator documentation and BRAT/manual migration guide.
 - [x] Guarded synthetic runtime fixture and development test plugin; harness is type-checked and excluded from releases.
 
+- [x] 0.3.2 IME composition guard; narrow-column search reveals results; Escape keeps keyboard focus inside Navigator.
+- [x] One preview read in flight across renders, stale-result cancellation, bounded cache and rename invalidation.
+- [x] Result accessible names, pagination focus/count and scoped forced-colors styles.
+
 ## Pending P1 verification
 - [x] Actual isolated Obsidian 1.13.7 / Electron 43.3.0: default theme, public Theme 0.3.0 integration, save/reload, unload and popout.
 - [x] Full process restart preserves saved palette, selection angle and pinned paths.
@@ -18,7 +22,7 @@
 After explicit CDP authorization, both generated profiles produced passed runtime reports. Every connection verifies the generated Vault path before mutation. No personal Vault was connected.
 
 ## Later verification
-- [ ] Large-vault latency/memory, Chinese IME and long-term table/Canvas/cursor coexistence.
+- [ ] Large-vault latency/memory, physical Windows Chinese IME candidate selection and long-term table/Canvas/cursor coexistence. Synthetic composition events pass; this is not a physical IME certification.
 - [ ] Keyboard/screen-reader/high-contrast, DPI and multi-monitor matrix.
 
 No personal-vault deployment or note organization was performed.

@@ -15,3 +15,5 @@ CI 只執行單元／合成檔案系統測試與 harness 的型別檢查，不�
 已明確授權使用 CDP，連接前核對合成 Vault 絕對路徑。Obsidian 1.13.7 / Electron 43.3.0：預設主題 14 項、公開 Theme 0.3.0 整合 15 項均通過；完整程序重啟也保留色盤、選取角度及釘選。尚未驗證 BRAT 實際更新 UI、中文 IME、無障礙及原生模糊視覺。
 
 開發連線使用 --remote-debugging-port=9239 --remote-debugging-address=127.0.0.1；node scripts/runtime-control.mjs inspect/run/restart 分別檢查、執行 harness、核對重啟設定。僅適用 runtime:prepare 產生的實例。程序重啟前將合成 community-plugins.json 保留 personal-glass，避免 harness 自動重跑。
+
+0.3.2：預設主題 18 項、Theme 19 項通過，新增 CompositionEvent／InputEvent 組字保護與鍵盤焦點測試。這些是合成事件，不代表已實測 Windows 輸入法候選視窗。
