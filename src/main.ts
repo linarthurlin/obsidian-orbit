@@ -190,7 +190,7 @@ class GlassSettingTab extends PluginSettingTab {
       this.plugin.settings.navigatorPreviews = value; await this.plugin.persist();
     }));
     new Setting(containerEl).setName('Markdown slash menu / Markdown 斜線選單')
-      .setDesc('Type / or ／ to insert existing Personal Glass Markdown commands. Supports Traditional Chinese search and stays off inside code blocks.')
+      .setDesc('This menu edits only the active document and never runs Obsidian or plugin commands. Obsidian Core Slash Commands may claim / on blank blocks; use ／ for Companion, or disable the core provider yourself. Companion never changes that setting.')
       .addToggle(toggle => toggle.setValue(this.plugin.settings.slashMenu).onChange(async value => {
         this.plugin.settings.slashMenu = value; await this.plugin.persist();
       }));

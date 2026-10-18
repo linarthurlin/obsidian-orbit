@@ -22,7 +22,8 @@ if(scenario==='theme'){
 }
 await writeFile(join(vault,'.obsidian/appearance.json'),JSON.stringify({cssTheme:scenario==='theme'?'Personal Glass':'',theme:'moonstone'}));
 await writeFile(join(vault,'.obsidian/app.json'),JSON.stringify({showInlineTitle:false,propertiesInDocument:'hidden'}));
-await writeFile(join(vault,'.obsidian/core-plugins.json'),JSON.stringify({'file-explorer':true,'command-palette':true,'slash-command':true}));
+// Keep Obsidian's own slash-command provider off so this runtime checks the Companion's document-only menu in isolation.
+await writeFile(join(vault,'.obsidian/core-plugins.json'),JSON.stringify({'file-explorer':true,'command-palette':true,'slash-command':false}));
 await writeFile(join(vault,'.obsidian/community-plugins.json'),JSON.stringify(['personal-glass','personal-glass-runtime-smoke']));
 await writeFile(join(profile,'obsidian.json'),JSON.stringify({vaults:{a1b2c3d4e5f60123:{path:vault,ts:Date.now(),open:true}}}));
 const run={scenario,home,vault,profile,report};await writeFile('.local/runtime-last.json',JSON.stringify(run,null,2));console.log(JSON.stringify(run,null,2));

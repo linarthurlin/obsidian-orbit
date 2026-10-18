@@ -1,7 +1,7 @@
 {
   "id": "personal-glass",
   "name": "Personal Glass Companion",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "minAppVersion": "1.6.0",
   "description": "Appearance controls, read-only Navigator and Markdown commands. Independent of AI and optional Personal Glass theme.",
   "author": "linarthurlin",
