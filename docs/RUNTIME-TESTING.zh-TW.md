@@ -17,3 +17,5 @@ CI 只執行單元／合成檔案系統測試與 harness 的型別檢查，不�
 開發連線使用 --remote-debugging-port=9239 --remote-debugging-address=127.0.0.1；node scripts/runtime-control.mjs inspect/run/restart 分別檢查、執行 harness、核對重啟設定。僅適用 runtime:prepare 產生的實例。程序重啟前將合成 community-plugins.json 保留 personal-glass，避免 harness 自動重跑。
 
 0.3.2：預設主題 18 項、Theme 19 項通過，新增 CompositionEvent／InputEvent 組字保護與鍵盤焦點測試。這些是合成事件，不代表已實測 Windows 輸入法候選視窗。
+
+0.4.0：在新建的 default 合成 Vault 上，runtime harness 19 項通過；`node scripts/runtime-control.mjs slash-ui` 另外用 CDP 真實輸入測試斜線選單 9 項，包含半形／全形斜線、拼音篩選、程式碼區塊抑制、Enter 插入、停用設定及 Welcome.md 還原。這是合成文字輸入，不是實體 Windows 中文輸入法測試；報告寫入該次執行的 `result.json`。

@@ -22,6 +22,8 @@ export default class RuntimeHarness extends Plugin {
    const leaf=app.workspace.getLeaf('tab');await leaf.setViewState({type:'markdown',state:{file:'Welcome.md',mode:'source'}});app.workspace.setActiveLeaf(leaf,{focus:true});
    const editor=leaf.view.editor;assert(editor,'editorAvailable');
    const source=editor.getValue();
+   const slash=app.workspace.editorSuggest.suggests.find((value:any)=>value.constructor.name==='PersonalGlassSlashSuggest');
+   assert(slash,'slashSuggestRegistered');
    try{editor.setSelection({line:0,ch:0},{line:0,ch:2});app.commands.executeCommandById('personal-glass:callout-note');assert(editor.getValue().includes('> [!note]'),'calloutInsertion');editor.undo();assert(editor.getValue()===source,'editorUndo')}
    finally{if(editor.getValue()!==source)editor.setValue(source)}
    await plugin.openNavigator();

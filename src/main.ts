@@ -5,6 +5,7 @@ import { NativeMaterialController, type NativeWindow } from './native';
 import { GlassNavigator, NAVIGATOR_VIEW } from './navigator';
 import { rememberPath, relocatePaths } from './navigator-model';
 import { selectionVariables } from './selection';
+import { PersonalGlassSlashSuggest } from './slash-suggest';
 
 declare const require: (name: string) => unknown;
 interface SurfaceState {
@@ -29,6 +30,7 @@ export default class PersonalGlass extends Plugin {
     this.settings = normalizeSettings(await this.loadData());
     if (!this.active) return;
     this.registerView(NAVIGATOR_VIEW, leaf => new GlassNavigator(leaf, this));
+    this.registerEditorSuggest(new PersonalGlassSlashSuggest(this.app, () => this.settings.slashMenu));
     this.addCommand({ id: 'open-navigator', name: 'Open read-only Navigator / 檔案導覽', callback: () => this.openNavigator() });
     this.addCommand({ id: 'open-notebook-navigator', name: 'Open Notebook Navigator integration', callback: () => this.openNotebookNavigator() });
     this.addRibbonIcon('panels-left-bottom', 'Personal Glass Navigator', () => { void this.openNavigator(); });
@@ -187,6 +189,11 @@ class GlassSettingTab extends PluginSettingTab {
     new Setting(containerEl).setName('Local note previews').setDesc('Off by default. Reads only displayed Markdown rows; no AI or external images.').addToggle(toggle => toggle.setValue(this.plugin.settings.navigatorPreviews).onChange(async value => {
       this.plugin.settings.navigatorPreviews = value; await this.plugin.persist();
     }));
+    new Setting(containerEl).setName('Markdown slash menu / Markdown 斜線選單')
+      .setDesc('Type / or ／ to insert existing Personal Glass Markdown commands. Supports Traditional Chinese search and stays off inside code blocks.')
+      .addToggle(toggle => toggle.setValue(this.plugin.settings.slashMenu).onChange(async value => {
+        this.plugin.settings.slashMenu = value; await this.plugin.persist();
+      }));
     containerEl.createEl('h3', { text: 'Selection colors / 文件選取配色' });
     containerEl.createEl('p', { text: 'These appearance controls require the separately installed Personal Glass theme. Light/dark colors are independent. Navigator and Markdown commands also work with other themes.' });
     const preview = containerEl.createDiv({ cls: 'pg-selection-preview', attr: { 'aria-label': 'Selection appearance preview' } });

@@ -7,6 +7,7 @@
 重新載入 Personal Glass 後，使用左側 **Personal Glass Navigator** 圖示，或命令 **Personal Glass: Open read-only Navigator / 檔案導覽**。
 
 - 中文輸入法組字期間保留既有結果，確認文字後才篩選；輸入搜尋文字會自動顯示結果。
+- 在 Markdown 編輯器輸入 `/` 或 `／` 開啟快速插入選單，可用繁中、英文或拼音搜尋標題、清單、Callout、程式碼、公式與表格；選取後直接插入 Markdown 並選取預留文字。可在 Companion 設定中關閉；程式碼區塊和行內程式碼中不會觸發。
 - 搜尋檔名、路徑、frontmatter `aliases`；`#robotics` 同時符合 `#robotics/estimation`。多個關鍵字取交集。
 - 資料夾按鈕切換來源／結果，包含 All notes、Recently opened、Pinned。資料夾逐層瀏覽，Parent folder 返回上一層。
 - Notes 包含 Markdown、Canvas 與 Bases；可切換附件／全部檔案、名稱自然排序／修改時間、是否包含子資料夾。

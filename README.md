@@ -16,7 +16,7 @@ Each has its own manifest, build, version, installer, CI and releases. No runtim
 
 Download `personal-glass-companion-<version>.zip` from [Releases](https://github.com/linarthurlin/obsidian-personal-glass-companion/releases). Extract into `<vault>/.obsidian/plugins/personal-glass/`. Reload Obsidian and enable this plugin manually. The installer does not activate anything or modify notes/configuration/data.json.
 
-Navigator and Markdown commands work with Obsidian’s default theme. Palette/surface/selection appearance controls require the separate Personal Glass theme. Optional Notebook Navigator must be installed separately; its GPL implementation is not bundled.
+Navigator, Markdown commands and the searchable slash menu work with Obsidian’s default theme. Type `/` or `／` in a Markdown note to insert a heading, list, callout, code block, math block or table; search supports Traditional Chinese, English and pinyin. Palette/surface/selection appearance controls require the separate Personal Glass theme. Optional Notebook Navigator must be installed separately; its GPL implementation is not bundled.
 
 [Navigator usage](docs/NAVIGATOR.zh-TW.md).
 
@@ -32,7 +32,7 @@ npm run package
 
 Installable output: `dist/plugin`. Release output: `release/current`. CI validates on Linux and Windows; matching `x.y.z` tags publish prereleases with SHA-256 checksums.
 
-The split does not deploy anything into a personal vault. Runtime verification of the independent components remains pending; historical combined-app evidence is clearly separated in [testing](docs/TESTING.md).
+The split does not deploy anything into a personal vault. The Traditional Chinese slash menu is implemented and verified in an isolated Obsidian 1.13.7 runtime; physical Windows IME behavior remains separately unverified. See [testing](docs/TESTING.md) for current evidence and limits.
 
 ## Regression and migration checks
 

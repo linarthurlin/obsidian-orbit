@@ -21,6 +21,38 @@ try{
  const mode=process.argv[2]||'run';
  if(mode==='inspect'){
   console.log(JSON.stringify(await evaluate("({title:document.title,enabled:app.plugins.isEnabled(),plugins:Object.keys(app.plugins.plugins),modals:Array.from(document.querySelectorAll('.modal-container')).map(el=>({text:el.innerText.slice(0,800),buttons:Array.from(el.querySelectorAll('button')).map(b=>b.textContent)}))})"),null,2));
+ }else if(mode==='trust'){
+  const trusted=await evaluate("(()=>{const button=Array.from(document.querySelectorAll('.modal-container button')).find(el=>el.textContent?.includes('Trust author and enable plugins'));if(!button)return false;button.click();return true})()");
+  assert(trusted,'Expected the first-open trust prompt for this generated fixture');console.log('Trusted only the generated synthetic vault');
+ }else if(mode==='slash-ui'){
+  await evaluate("(async()=>{if(!app.plugins.isEnabled())await app.plugins.setEnable(true);if(!app.plugins.plugins['personal-glass'])await app.plugins.loadPlugin('personal-glass');const leaf=app.workspace.getLeavesOfType('markdown')[0]||app.workspace.getLeaf('tab');await leaf.setViewState({type:'markdown',state:{file:'Welcome.md',mode:'source'}});app.workspace.setActiveLeaf(leaf,{focus:true});return true})()");
+  const original=await evaluate("app.vault.cachedRead(app.vault.getAbstractFileByPath('Welcome.md'))");
+  const checks={};let failure,restored=false;
+  const check=(value,label)=>{assert(value,label);checks[label]=true};
+  const prepare=async(value,line,ch)=>evaluate(`(()=>{const leaf=app.workspace.getLeavesOfType('markdown')[0],editor=leaf.view.editor;editor.setValue(${JSON.stringify(value)});editor.setCursor({line:${line},ch:${ch}});leaf.view.containerEl.querySelector('.cm-content')?.focus();return editor.getValue()})()`);
+  const type=async(value)=>{await send('Input.insertText',{text:value});await new Promise(resolve=>setTimeout(resolve,250))};
+  const key=async(name,code)=>{await send('Input.dispatchKeyEvent',{type:'keyDown',key:name,code});await send('Input.dispatchKeyEvent',{type:'keyUp',key:name,code});await new Promise(resolve=>setTimeout(resolve,150))};
+  const rows=()=>evaluate("Array.from(document.querySelectorAll('.pg-slash-suggestion')).map(el=>el.querySelector('.pg-slash-title')?.textContent)");
+  try{
+   check(await evaluate("app.plugins.plugins['personal-glass'].settings.slashMenu"),'slashMenuEnabledByDefault');
+   await prepare('正文',0,2);await type('/');let visible=await rows();check(visible.length===14 && visible[0]==='標題一','asciiSlashShowsFourteenTraditionalChineseChoices');
+   await key('Escape','Escape');await prepare('正文',0,2);await type('／');await type('biaoge');visible=await rows();check(visible.length===1 && visible[0]==='表格','fullwidthSlashAndPinyinSearch');
+   await key('Escape','Escape');await prepare('```md\n',1,0);await type('/');check((await rows()).length===0,'fencedCodeSuppression');
+   await prepare('inline ` ',0,9);await type('/todo');check((await rows()).length===0,'inlineCodeSuppression');
+   await prepare('正文',0,2);await type('/h1');visible=await rows();check(visible.length===1 && visible[0]==='標題一','headingSearch');await key('Enter','Enter');
+   const inserted=await evaluate("(()=>{const editor=app.workspace.getLeavesOfType('markdown')[0].view.editor;return {value:editor.getValue(),selection:editor.getSelection()}})()");
+   check(inserted.value==='正文\n# Heading' && inserted.selection==='Heading','keyboardInsertionAndPlaceholderSelection');
+   await evaluate("app.plugins.plugins['personal-glass'].settings.slashMenu=false");await prepare('',0,0);await type('/');check((await rows()).length===0,'settingDisablesMenu');
+  }catch(error){failure=error}
+  finally{
+   try{
+    restored=await evaluate(`(async()=>{const p=app.plugins.plugins['personal-glass'];if(p)p.settings.slashMenu=true;const file=app.vault.getAbstractFileByPath('Welcome.md'),leaf=app.workspace.getLeavesOfType('markdown')[0],editor=leaf?.view?.editor,original=${JSON.stringify(original)};if(editor)editor.setValue(original);if(file)await app.vault.modify(file,original);if(editor){editor.setValue(original);editor.setCursor({line:0,ch:0})}return await app.vault.cachedRead(file)===original})()`);
+   }catch(error){failure??=error}
+  }
+  checks.syntheticWelcomeRestored=restored;if(!restored)failure??=new Error('Synthetic Welcome.md was not restored');
+  const report=JSON.parse(await readFile(run.report,'utf8'));report.slashMenu={status:failure?'failed':'passed',method:'CDP trusted text input in generated synthetic vault; physical IME not tested',checks};if(failure)report.slashMenu.error=String(failure);await writeFile(run.report,JSON.stringify(report,null,2));
+  console.log(JSON.stringify(report.slashMenu,null,2));
+  if(failure)throw failure;
  }else if(mode==='restart'){
   const state=await evaluate("(async()=>{if(!app.plugins.isEnabled())await app.plugins.setEnable(true);if(!app.plugins.plugins['personal-glass'])await app.plugins.loadPlugin('personal-glass');const p=app.plugins.plugins['personal-glass'];return {angle:p.settings.selectionAngle,pins:p.settings.pinnedPaths,palette:p.settings.palette}})()");
   assert.equal(state.angle,187);assert(state.pins.includes('Welcome.md'));assert.equal(state.palette,'rose');

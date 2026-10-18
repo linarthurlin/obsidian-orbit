@@ -11,6 +11,7 @@ export interface GlassSettings {
   contentWidth: number;
   navigatorLayout: 'auto' | 'single' | 'dual';
   navigatorPreviews: boolean;
+  slashMenu: boolean;
   pinnedPaths: string[];
   recentPaths: string[];
   selectionLightStart: string;
@@ -26,7 +27,7 @@ export interface GlassSettings {
 export const DEFAULT_SETTINGS: GlassSettings = {
   palette: 'warm', surface: 'portable', material: 'none',
   roundedImages: true, reduceMotion: false, contentWidth: 820,
-  navigatorLayout: 'auto', navigatorPreviews: false, pinnedPaths: [], recentPaths: [],
+  navigatorLayout: 'auto', navigatorPreviews: false, slashMenu: true, pinnedPaths: [], recentPaths: [],
   selectionLightStart: '#e9d9ba', selectionLightEnd: '#c8dacb',
   selectionDarkStart: '#514a39', selectionDarkEnd: '#354c41',
   selectionLightOpacity: 100, selectionDarkOpacity: 100, selectionBlur: 0,
@@ -50,6 +51,7 @@ export function normalizeSettings(value: unknown): GlassSettings {
       ? Math.round(Math.min(1100, Math.max(640, raw.contentWidth))) : 820,
     navigatorLayout: choice(['auto', 'single', 'dual'] as const, raw.navigatorLayout, 'auto'),
     navigatorPreviews: raw.navigatorPreviews === true,
+    slashMenu: raw.slashMenu !== false,
     pinnedPaths: sanitizePaths(raw.pinnedPaths, 200),
     recentPaths: sanitizePaths(raw.recentPaths, 40),
     selectionLightStart: color('selectionLightStart'), selectionLightEnd: color('selectionLightEnd'),

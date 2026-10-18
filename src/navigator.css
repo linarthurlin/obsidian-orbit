@@ -49,6 +49,10 @@
 .pg-selection-preview strong, .pg-selection-preview span { display: block; }
 .pg-selection-preview span { margin-top: 6px; }
 
+.suggestion-item.pg-slash-suggestion { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.pg-slash-title { overflow: hidden; text-overflow: ellipsis; }
+.pg-slash-syntax { flex: 0 0 auto; color: var(--text-faint); font-family: var(--font-monospace); font-size: var(--font-smaller); }
+
 /* Keep keyboard position visible even when an external theme removes button outlines. */
 .pg-navigator :is(button, input, select):focus-visible { outline: 2px solid var(--pg-accent); outline-offset: -2px; }
 @media (forced-colors: active) {

@@ -5,11 +5,12 @@ vi.mock('obsidian',()=>({
     constructor(app:any){this.app=app}
     loadData=vi.fn(async()=>null);
     saveData=vi.fn(async(_data:any)=>{});
-    registerView=vi.fn();addCommand=(command:any)=>this.commands.push(command);
+    registerView=vi.fn();registerEditorSuggest=vi.fn();addCommand=(command:any)=>this.commands.push(command);
     registerEvent=(event:any)=>this.registered.push(event);
     addRibbonIcon=vi.fn();addSettingTab=vi.fn();
   },
   PluginSettingTab:class {constructor(..._args:any[]){}},
+  EditorSuggest:class {context:any=null;limit=0;constructor(..._args:any[]){}},
   Setting:class {},Notice:class {},ItemView:class {},TFile:class {},TFolder:class {},Menu:class {},
   setIcon:vi.fn(),getAllTags:vi.fn(),Platform:{isWin:false,isDesktopApp:false},
 }));

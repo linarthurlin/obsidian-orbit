@@ -13,6 +13,7 @@
 - [x] 0.3.2 IME composition guard; narrow-column search reveals results; Escape keeps keyboard focus inside Navigator.
 - [x] One preview read in flight across renders, stale-result cancellation, bounded cache and rename invalidation.
 - [x] Result accessible names, pagination focus/count and scoped forced-colors styles.
+- [x] Traditional Chinese slash menu for the existing Markdown templates: ASCII/full-width slash, pinyin and bilingual search, code-span/fence suppression, keyboard insertion and placeholder selection. Verified with unit tests and real editor input in an isolated Obsidian runtime.
 
 ## Pending P1 verification
 - [x] Actual isolated Obsidian 1.13.7 / Electron 43.3.0: default theme, public Theme 0.3.0 integration, save/reload, unload and popout.
