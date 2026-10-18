@@ -17,7 +17,7 @@
     "runtime:prepare": "npm run build && node scripts/prepare-runtime.mjs"
   },
   "devDependencies": {
-    "@types/node": "22.20.5",
+    "@types/node": "26.6.5",
     "esbuild": "0.28.2",
     "fflate": "0.8.3",
     "obsidian": "1.14.4",
