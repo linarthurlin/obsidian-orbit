@@ -9,6 +9,7 @@ import { selectionVariables } from './selection';
 declare const require: (name: string) => unknown;
 interface SurfaceState {
   body: HTMLElement;
+  nativeWindow: NativeWindow | null;
   attributes: Map<string, string | null>;
   width: string;
   widthPriority: string;
@@ -26,6 +27,7 @@ export default class PersonalGlass extends Plugin {
   async onload() {
     this.active = true;
     this.settings = normalizeSettings(await this.loadData());
+    if (!this.active) return;
     this.registerView(NAVIGATOR_VIEW, leaf => new GlassNavigator(leaf, this));
     this.addCommand({ id: 'open-navigator', name: 'Open read-only Navigator / 檔案導覽', callback: () => this.openNavigator() });
     this.addCommand({ id: 'open-notebook-navigator', name: 'Open Notebook Navigator integration', callback: () => this.openNotebookNavigator() });
@@ -66,20 +68,22 @@ export default class PersonalGlass extends Plugin {
     this.registerEvent(this.app.workspace.on('window-open', (_workspaceWindow, win) => this.applyDocument(win.document)));
     this.registerEvent(this.app.workspace.on('window-close', (_workspaceWindow, win) => {
       const state = this.surfaces.get(win.document);
-      if (state) this.restore(state);
+      if (state) { this.native.release(state.nativeWindow); this.restore(state); }
       this.surfaces.delete(win.document);
     }));
     this.app.workspace.onLayoutReady(() => this.applyAll());
   }
   async persist() {
+    if (!this.active) return;
     this.settings = normalizeSettings(this.settings);
-    const snapshot = this.settings;
+    const snapshot = normalizeSettings(this.settings);
     this.saveQueue = this.saveQueue.catch(() => {}).then(() => this.saveData(snapshot));
     await this.saveQueue;
     this.applyAll();
     this.refreshNavigators();
   }
   refreshNavigators() {
+    if (!this.active) return;
     for (const leaf of this.app.workspace.getLeavesOfType(NAVIGATOR_VIEW)) (leaf.view as GlassNavigator).refresh();
   }
   async openNavigator() {
@@ -118,7 +122,7 @@ export default class PersonalGlass extends Plugin {
     const body = doc.body;
     if (!body) return;
     if (!this.surfaces.has(doc)) this.surfaces.set(doc, {
-      body, attributes: new Map(ATTRS.map(attr => [attr, body.getAttribute(attr)])),
+      body, nativeWindow: null, attributes: new Map(ATTRS.map(attr => [attr, body.getAttribute(attr)])),
       width: body.style.getPropertyValue('--personal-content-width'),
       widthPriority: body.style.getPropertyPriority('--personal-content-width'),
       selectionStyles: new Map(Object.keys(selectionVariables(this.settings)).map(key => [key, {
@@ -131,7 +135,9 @@ export default class PersonalGlass extends Plugin {
     body.setAttribute('data-personal-motion', this.settings.reduceMotion ? 'reduced' : 'system');
     body.style.setProperty('--personal-content-width', `${this.settings.contentWidth}px`);
     for (const [key, value] of Object.entries(selectionVariables(this.settings))) body.style.setProperty(key, value);
-    const result = this.native.apply(this.getNativeWindow(doc), this.settings.material, Platform.isWin);
+    const nativeWindow = this.getNativeWindow(doc);
+    this.surfaces.get(doc)!.nativeWindow = nativeWindow;
+    const result = this.native.apply(nativeWindow, this.settings.material, Platform.isWin);
     body.setAttribute('data-personal-native', result.active ? 'active' : 'off');
     if (doc === document) this.nativeStatus = result.message;
   }

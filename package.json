@@ -1,6 +1,6 @@
 {
   "name": "obsidian-personal-glass-companion",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "type": "module",
   "description": "Personal Glass Companion — independent Obsidian component",
@@ -13,7 +13,8 @@
     "package": "node scripts/package.mjs",
     "install:vault": "node scripts/install.mjs",
     "version:sync": "node scripts/version.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "runtime:prepare": "npm run build && node scripts/prepare-runtime.mjs"
   },
   "devDependencies": {
     "@types/node": "22.20.5",

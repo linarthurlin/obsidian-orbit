@@ -1,6 +1,6 @@
 # Personal Glass Navigator
 
-0.2.0 以獨立 ItemView 整合導覽器，原生 File explorer 仍可使用。它只開啟檔案、讀取中繼資料，並將最近與釘選路徑存在本外掛的 `data.json`；沒有改名、搬動、刪除或自動整理筆記的操作。
+0.3.x Companion 以獨立 ItemView 提供導覽器，原生 File explorer 仍可使用。它只開啟檔案、讀取中繼資料，並將最近與釘選路徑存在本外掛的 `data.json`；沒有改名、搬動、刪除或自動整理筆記的操作。
 
 ## 開啟與使用
 
@@ -15,13 +15,13 @@
 
 設定中的 **Local note previews** 預設關閉。開啟後只讀取目前已列出的 Markdown，跳過超過 200KB 的檔案，快取最多 120 筆；每次先列出 80 個結果，可按 Show next 繼續。搜尋使用 Obsidian 中繼資料快取，不建立全庫內容索引、不載入遠端縮圖。檔案很多時中繼資料篩選仍有全庫遍歷成本，尚未宣稱大型 Vault 效能達標。
 
-## 平面選取配色（0.2.2）
+## 平面選取配色（獨立 Companion）
 
-Settings → Personal Glass → **Selection colors / 文件選取配色** 可即時控制淺色與深色各兩個漸層顏色，以及漸層方向（0–360°）。預設為 Champagne × Sage；Reset 只回復選取設定。
+Settings → Personal Glass Companion → **Selection colors / 文件選取配色** 可即時控制淺色與深色各兩個漸層顏色，以及漸層方向（0–360°）。預設為 Champagne × Sage；Reset 只回復選取設定。
 
-目前文件使用持續的整列不透明漸層背景，沒有單條側邊指示線、模糊、高光或陰影。色彩相同時可作為單色選取。舊版儲存的玻璃強度、模糊與透明度會被忽略；舊版預設深色端點會換成較深的平面配色，自訂顏色保留。這次只移除選取區的玻璃效果，其他主題表面與原生材質設定仍獨立。
+使用 Personal Glass Theme 時，目前文件使用 Theme 提供的整列平面漸層；Companion 在其他主題下只提供原生樣式的整列選取 fallback。色彩相同時可作為單色選取。舊版儲存的玻璃強度、模糊與透明度會被忽略；舊版預設深色端點會換成較深的平面配色，自訂顏色保留。這次只移除選取區的玻璃效果，其他主題表面與原生材質設定仍獨立。
 
-文字會依兩端顏色與明暗模式估算可讀的深／淺色；強烈對比的漸層或複雜背景仍需人工確認。設定套用於 Personal Glass Navigator、原生 File explorer 與選配 Notebook Navigator；不修改任何文件內容。
+文字會依兩端顏色與明暗模式估算可讀的深／淺色；強烈對比的漸層或複雜背景仍需人工確認。Companion 只輸出外觀變數；Personal Glass Theme 負責 Navigator、原生 File explorer 與選配 Notebook Navigator 的視覺適配。未安裝 Theme 時，配色控制不保證有相同外觀；不修改任何文件內容。
 
 ## Notebook Navigator 選配
 

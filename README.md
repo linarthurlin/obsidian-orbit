@@ -33,3 +33,7 @@ npm run package
 Installable output: `dist/plugin`. Release output: `release/current`. CI validates on Linux and Windows; matching `x.y.z` tags publish prereleases with SHA-256 checksums.
 
 The split does not deploy anything into a personal vault. Runtime verification of the independent components remains pending; historical combined-app evidence is clearly separated in [testing](docs/TESTING.md).
+
+## Regression and migration checks
+
+See [migration guide](docs/MIGRATION.zh-TW.md), [isolated runtime tests](docs/RUNTIME-TESTING.zh-TW.md), and [verification limits](docs/TESTING.md). The 0.3.1 automated suite covers lifecycle logic and in-place settings preservation; actual app/BRAT UI checks remain separately tracked.

@@ -23,6 +23,9 @@ export class NativeMaterialController {
       return { active: false, message: 'Native material failed. Portable fallback remains active.' };
     }
   }
+  release(win: NativeWindow | null) {
+    if (win && this.owned.has(win)) this.reset(win);
+  }
   private reset(win: NativeWindow) {
     try { if (!win.isDestroyed?.()) win.setBackgroundMaterial?.('auto'); } catch { /* window may be closing */ }
     this.owned.delete(win);

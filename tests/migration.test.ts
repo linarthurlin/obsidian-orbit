@@ -1,0 +1,21 @@
+import {it,expect} from 'vitest';
+import {mkdtemp,mkdir,writeFile,readFile} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {install} from '../scripts/install.mjs';
+import {normalizeSettings} from '../src/settings';
+it('rehearses an in-place monolith upgrade without changing saved settings or BRAT metadata',async()=>{
+ const vault=await mkdtemp(join(tmpdir(),'pg-migration-')),dir=join(vault,'.obsidian/plugins/personal-glass'),brat=join(vault,'.obsidian/plugins/obsidian42-brat');
+ await mkdir(dir,{recursive:true});await mkdir(brat,{recursive:true});
+ const legacy={palette:'rose',surface:'focus',contentWidth:940,navigatorLayout:'single',navigatorPreviews:true,pinnedPaths:['Research/A.md'],recentPaths:['Research/B.md'],selectionLightStart:'#abcdef',selectionLightEnd:'#fedcba',selectionDarkStart:'#102030',selectionDarkEnd:'#304050',selectionAngle:210,selectionBlur:12,selectionGlass:55};
+ const bytes=JSON.stringify(legacy,null,2);
+ const bratBytes=JSON.stringify({pluginList:['linarthurlin/obsidian-personal-glass']});
+ await writeFile(join(dir,'main.js'),'LEGACY');await writeFile(join(dir,'data.json'),bytes);await writeFile(join(brat,'data.json'),bratBytes);
+ await install(vault);await install(vault);
+ expect(await readFile(join(dir,'data.json'),'utf8')).toBe(bytes);
+ expect(await readFile(join(brat,'data.json'),'utf8')).toBe(bratBytes);
+ const normalized=normalizeSettings(JSON.parse(bytes));
+ for(const key of ['palette','surface','contentWidth','navigatorLayout','navigatorPreviews','pinnedPaths','recentPaths','selectionLightStart','selectionLightEnd','selectionDarkStart','selectionDarkEnd','selectionAngle'] as const)expect(normalized[key]).toEqual(legacy[key]);
+ expect(normalized.selectionGlass).toBe(0);expect(normalized.selectionBlur).toBe(0);
+ expect(JSON.parse(await readFile(join(dir,'manifest.json'),'utf8')).id).toBe('personal-glass');
+});
