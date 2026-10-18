@@ -5,9 +5,16 @@ const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 export async function install(vaultPath) {
   const vault = await realpath(resolve(vaultPath));
   const targets = [
-    { path: '.obsidian/themes/Personal Glass', from: 'theme', files: ['theme.css', 'manifest.json'] },
-    { path: '.obsidian/plugins/personal-glass', from: 'plugin', files: ['main.js', 'manifest.json', 'styles.css'] },
-  ];
+  {
+    "path": ".obsidian/plugins/personal-glass",
+    "from": "plugin",
+    "files": [
+      "main.js",
+      "manifest.json",
+      "styles.css"
+    ]
+  }
+];
   // Check every existing parent before any mutation. Junctions must not escape the selected vault.
   for (const target of targets) {
     let cursor = vault;

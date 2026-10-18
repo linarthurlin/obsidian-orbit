@@ -182,7 +182,7 @@ class GlassSettingTab extends PluginSettingTab {
       this.plugin.settings.navigatorPreviews = value; await this.plugin.persist();
     }));
     containerEl.createEl('h3', { text: 'Selection colors / 文件選取配色' });
-    containerEl.createEl('p', { text: 'Opaque Champagne × Sage gradient, without blur, highlights or shadow. Light and dark colors are independent. Changes apply immediately to Navigator, native File explorer and optional Notebook Navigator.' });
+    containerEl.createEl('p', { text: 'These appearance controls require the separately installed Personal Glass theme. Light/dark colors are independent. Navigator and Markdown commands also work with other themes.' });
     const preview = containerEl.createDiv({ cls: 'pg-selection-preview', attr: { 'aria-label': 'Selection appearance preview' } });
     preview.createEl('strong', { text: 'Personal Glass' });
     preview.createSpan({ text: 'A quiet space for connected ideas' });

@@ -1,3 +1,11 @@
+# Personal Glass Companion changes
+
+## 0.3.0 — independent repository
+
+Separate scope, manifest, build/install/package and CI. See docs/REPOSITORY-SPLIT.md for provenance and migration.
+
+## Historical combined project
+
 # Changelog
 
 ## 0.1.0 — 2026-10-17
