@@ -35,13 +35,22 @@ try{
   const rows=()=>evaluate("Array.from(document.querySelectorAll('.pg-slash-suggestion')).map(el=>el.querySelector('.pg-slash-title')?.textContent)");
   try{
    check(await evaluate("app.plugins.plugins['personal-glass'].settings.slashMenu"),'slashMenuEnabledByDefault');
-   await prepare('正文',0,2);await type('/');let visible=await rows();check(visible.length===14 && visible[0]==='標題一','asciiSlashShowsFourteenTraditionalChineseChoices');
+   await prepare('正文',0,2);await type('/');let visible=await rows();check(visible.length===19 && visible.includes('純文字') && visible.includes('標題一') && visible.includes('新增空白段落'),'asciiSlashShowsNineteenDocumentBlocks');
    await key('Escape','Escape');await prepare('正文',0,2);await type('／');await type('biaoge');visible=await rows();check(visible.length===1 && visible[0]==='表格','fullwidthSlashAndPinyinSearch');
    await key('Escape','Escape');await prepare('```md\n',1,0);await type('/');check((await rows()).length===0,'fencedCodeSuppression');
    await prepare('inline ` ',0,9);await type('/todo');check((await rows()).length===0,'inlineCodeSuppression');
    await prepare('正文',0,2);await type('/h1');visible=await rows();check(visible.length===1 && visible[0]==='標題一','headingSearch');await key('Enter','Enter');
-   const inserted=await evaluate("(()=>{const editor=app.workspace.getLeavesOfType('markdown')[0].view.editor;return {value:editor.getValue(),selection:editor.getSelection()}})()");
-   check(inserted.value==='正文\n# Heading' && inserted.selection==='Heading','keyboardInsertionAndPlaceholderSelection');
+   let inserted=await evaluate("(()=>{const editor=app.workspace.getLeavesOfType('markdown')[0].view.editor;return {value:editor.getValue(),selection:editor.getSelection()}})()");
+   check(inserted.value==='# 正文','headingTransformsCurrentDocumentBlock');
+   await prepare('',0,0);await type('/h1');await key('Enter','Enter');
+   inserted=await evaluate("(()=>{const editor=app.workspace.getLeavesOfType('markdown')[0].view.editor;return {value:editor.getValue(),selection:editor.getSelection()}})()");
+   check(inserted.value==='# Heading' && inserted.selection==='Heading','emptyBlockInsertionAndPlaceholderSelection');
+   await prepare('Keep this ',0,10);await type('/below');await key('Enter','Enter');
+   inserted=await evaluate("(()=>{const editor=app.workspace.getLeavesOfType('markdown')[0].view.editor;return {value:editor.getValue(),cursor:editor.getCursor()}})()");
+   const expectedBelow=['Keep this ','',''].join('\n');
+   check(inserted.value===expectedBelow && inserted.cursor.line===1 && inserted.cursor.ch===0,'paragraphBelowAction');
+   await prepare('Keep this ',0,10);await type('/todo');await key('Enter','Enter');
+   inserted=await evaluate("app.workspace.getLeavesOfType('markdown')[0].view.editor.getValue()");check(inserted==='- [ ] Keep this','todoTransformsDocumentBlock');
    await evaluate("app.plugins.plugins['personal-glass'].settings.slashMenu=false");await prepare('',0,0);await type('/');check((await rows()).length===0,'settingDisablesMenu');
   }catch(error){failure=error}
   finally{

@@ -15,6 +15,15 @@ export const TEMPLATES: MarkdownTemplate[] = [
   { id: 'math', name: 'Insert math block / 公式', before: '$$\n', after: '\n$$', placeholder: 'A x = b' },
   { id: 'table', name: 'Insert table / 表格', before: '| Column | Value |\n| --- | --- |\n| ', after: ' |  |', placeholder: 'Item' },
 ];
+
+/** Additional document-only blocks for the slash menu; these are not Obsidian commands. */
+export const SLASH_TEMPLATES: MarkdownTemplate[] = [
+  { id: 'blank-below', name: 'Add paragraph below / 下方新增段落', before: '', after: '', placeholder: '' },
+  { id: 'paragraph', name: 'Insert text / 純文字', before: '', after: '', placeholder: 'Text' },
+  { id: 'numbered-list', name: 'Insert numbered list / 編號清單', before: '1. ', after: '', placeholder: 'Item' },
+  { id: 'link', name: 'Insert link / 連結', before: '[', after: '](url)', placeholder: 'Link text' },
+  { id: 'image', name: 'Insert image / 圖片', before: '![', after: '](image-url)', placeholder: 'Alt text' },
+];
 export interface Insertion { text: string; selectionStart: number; selectionEnd: number; }
 export function createInsertion(template: MarkdownTemplate, selected: string, before: string, after: string): Insertion {
   const prefix = before && !before.endsWith('\n') ? '\n' : '';

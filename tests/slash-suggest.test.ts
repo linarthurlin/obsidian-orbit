@@ -29,6 +29,8 @@ function editor(value: string) {
     },
     selection: null as unknown,
     setSelection(from: unknown, to: unknown) { this.selection = { from, to }; },
+    cursor: null as unknown,
+    setCursor(pos: unknown) { this.cursor = pos; },
   };
 }
 
@@ -61,23 +63,97 @@ describe('Traditional Chinese slash menu', () => {
   it('searches English, Traditional Chinese and pinyin aliases', () => {
     const plugin = suggest();
     const items = plugin.getSuggestions({ query: '', start: { line: 0, ch: 0 }, end: { line: 0, ch: 1 }, editor: {} as never, file: {} as never });
-    expect(items).toHaveLength(14);
+    expect(items).toHaveLength(19);
     expect(plugin.getSuggestions({ query: 'biaoge', start: {} as never, end: {} as never, editor: {} as never, file: {} as never }).map(item => item.title)).toEqual(['表格']);
     expect(plugin.getSuggestions({ query: '警告', start: {} as never, end: {} as never, editor: {} as never, file: {} as never }).map(item => item.title)).toEqual(['警告 Callout']);
     expect(plugin.getSuggestions({ query: 'warning', start: {} as never, end: {} as never, editor: {} as never, file: {} as never }).map(item => item.title)).toEqual(['警告 Callout']);
+    expect(plugin.getSuggestions({ query: 'ordered', start: {} as never, end: {} as never, editor: {} as never, file: {} as never }).map(item => item.title)).toEqual(['編號清單']);
+    expect(plugin.getSuggestions({ query: 'image', start: {} as never, end: {} as never, editor: {} as never, file: {} as never }).map(item => item.title)).toEqual(['圖片']);
     expect(plugin.getSuggestions({ query: 'missing', start: {} as never, end: {} as never, editor: {} as never, file: {} as never })).toEqual([]);
   });
 
-  it('replaces the trigger with portable Markdown and selects its placeholder', () => {
+  it('inserts portable Markdown into an empty block and selects its placeholder', () => {
     const plugin = suggest();
-    const ed = editor('正文/h1');
+    const ed = editor('/h1');
     plugin.context = {
-      start: { line: 0, ch: 2 }, end: { line: 0, ch: 5 }, editor: ed, file: {} as never,
+      start: { line: 0, ch: 0 }, end: { line: 0, ch: 3 }, editor: ed, file: {} as never,
       query: 'h1',
     } as never;
     const item = plugin.getSuggestions(plugin.context as never).find(value => value.template.id === 'heading-1')!;
     plugin.selectSuggestion(item);
-    expect(ed.value).toBe('正文\n# Heading');
+    expect(ed.value).toBe('# Heading');
     expect(ed.value.slice(ed.posToOffset((ed.selection as any).from), ed.posToOffset((ed.selection as any).to))).toBe('Heading');
+  });
+
+  it('adds an empty Markdown paragraph below the current block and places the caret there', () => {
+    const plugin = suggest();
+    const ed = editor('Current block /below');
+    plugin.context = {
+      start: { line: 0, ch: 14 }, end: { line: 0, ch: 20 }, editor: ed, file: {} as never,
+      query: 'below',
+    } as never;
+    const item = plugin.getSuggestions(plugin.context as never).find(value => value.template.id === 'blank-below')!;
+    plugin.selectSuggestion(item);
+    expect(ed.value).toBe('Current block \n\n');
+    expect(ed.cursor).toEqual({ line: 1, ch: 0 });
+  });
+
+  it('inserts portable Markdown link syntax and selects the link label', () => {
+    const plugin = suggest();
+    const ed = editor('/link');
+    plugin.context = {
+      start: { line: 0, ch: 0 }, end: { line: 0, ch: 5 }, editor: ed, file: {} as never,
+      query: 'link',
+    } as never;
+    const item = plugin.getSuggestions(plugin.context as never).find(value => value.template.id === 'link')!;
+    plugin.selectSuggestion(item);
+    expect(ed.value).toBe('[Link text](url)');
+    expect(ed.value.slice(ed.posToOffset((ed.selection as any).from), ed.posToOffset((ed.selection as any).to))).toBe('Link text');
+  });
+
+  it('turns the current paragraph into a Markdown heading and preserves the text', () => {
+    const plugin = suggest();
+    const ed = editor('Existing paragraph /h1');
+    plugin.context = {
+      start: { line: 0, ch: 19 }, end: { line: 0, ch: 22 }, editor: ed, file: {} as never,
+      query: 'h1',
+    } as never;
+    const item = plugin.getSuggestions(plugin.context as never).find(value => value.template.id === 'heading-1')!;
+    plugin.selectSuggestion(item);
+    expect(ed.value).toBe('# Existing paragraph');
+    expect(ed.cursor).toEqual({ line: 0, ch: 20 });
+  });
+
+  it('transforms list and callout blocks without invoking commands', () => {
+    const plugin = suggest();
+    const ed = editor('- Keep this /todo');
+    plugin.context = {
+      start: { line: 0, ch: 12 }, end: { line: 0, ch: 17 }, editor: ed, file: {} as never,
+      query: 'todo',
+    } as never;
+    const item = plugin.getSuggestions(plugin.context as never).find(value => value.template.id === 'todo')!;
+    plugin.selectSuggestion(item);
+    expect(ed.value).toBe('- [ ] Keep this');
+
+    const calloutEditor = editor('Remember this /note');
+    plugin.context = {
+      start: { line: 0, ch: 14 }, end: { line: 0, ch: 19 }, editor: calloutEditor, file: {} as never,
+      query: 'note',
+    } as never;
+    const callout = plugin.getSuggestions(plugin.context as never).find(value => value.template.id === 'callout-note')!;
+    plugin.selectSuggestion(callout);
+    expect(calloutEditor.value).toBe('> [!note]\n> Remember this');
+  });
+
+  it('keeps non-transform block actions as new Markdown blocks after the paragraph', () => {
+    const plugin = suggest();
+    const ed = editor('Keep this /code');
+    plugin.context = {
+      start: { line: 0, ch: 10 }, end: { line: 0, ch: 15 }, editor: ed, file: {} as never,
+      query: 'code',
+    } as never;
+    const item = plugin.getSuggestions(plugin.context as never).find(value => value.template.id === 'code')!;
+    plugin.selectSuggestion(item);
+    expect(ed.value).toBe('Keep this \n```text\nCode\n```');
   });
 });
